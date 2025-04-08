@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // Custom imports
@@ -13,10 +13,10 @@ import { ReservationsController } from '@reservations/reservations.controller';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Reservation]),
-    UsersModule,
-    ShowtimesModule,
+    forwardRef(() => UsersModule),
+    forwardRef(() => ShowtimesModule),
     SeatsModule,
-    OrdersModule,
+    forwardRef(() => OrdersModule),
   ],
   controllers: [ReservationsController],
   providers: [ReservationsService],

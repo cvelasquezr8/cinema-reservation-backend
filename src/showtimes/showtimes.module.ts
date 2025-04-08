@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ShowtimesService } from './showtimes.service';
 import { ShowtimesController } from './showtimes.controller';
@@ -12,7 +12,7 @@ import { ReservationsModule } from '@reservations/reservations.module';
     TypeOrmModule.forFeature([Showtime]),
     RoomsModule,
     MoviesModule,
-    ReservationsModule,
+    forwardRef(() => ReservationsModule),
   ],
   controllers: [ShowtimesController],
   providers: [ShowtimesService],

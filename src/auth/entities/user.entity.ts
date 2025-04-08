@@ -25,6 +25,7 @@ export class User {
 
   @Column('text', {
     select: false,
+    nullable: true,
   })
   password: string;
 
@@ -53,6 +54,11 @@ export class User {
 
   @Column('date', { nullable: true })
   birthdate: Date;
+
+  @Column('bool', {
+    default: false,
+  })
+  isGoogleUser: boolean;
 
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservations: Reservation[];

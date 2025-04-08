@@ -7,6 +7,7 @@ import { User } from '@auth/entities/user.entity';
 import { CreateUserDto, LoginUserDto } from '@auth/dto';
 import { HttpResponse, StandardHttpResponse } from '@common/http-response';
 import { UserWithToken } from '@common/interfaces/user-with-token.interface';
+import { GoogleAuthDto } from './dto/google-login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -69,5 +70,24 @@ export class AuthController {
       HttpStatus.OK,
       req.url,
     );
+  }
+
+  @Post('google')
+  async googleLogin(@Body() dto: GoogleAuthDto, @Req() req: Request) {
+    try {
+      const result = await this.authService.loginWithGoogle(dto);
+      return HttpResponse.success(
+        result,
+        'Login with Google successful',
+        HttpStatus.OK,
+        req.url,
+      );
+    } catch (error) {
+      return HttpResponse.error(
+        error.message || 'Login failed',
+        error.status || HttpStatus.UNAUTHORIZED,
+        req.url,
+      );
+    }
   }
 }
