@@ -9,12 +9,15 @@ import {
   Body,
   Patch,
   Delete,
+  Query,
 } from '@nestjs/common';
-import { MoviesService } from './movies.service';
+
+// Import necessary modules and decorators
 import { Auth } from '@auth/decorators';
-import { HttpResponse } from '@common/http-response';
-import { CreateMovieDto, UpdateMovieDto } from './dto';
 import { ValidRoles } from '@auth/interfaces';
+import { HttpResponse } from '@common/http-response';
+import { MoviesService } from '@movies/movies.service';
+import { CreateMovieDto, UpdateMovieDto } from '@movies/dto';
 
 @Controller('movies')
 export class MoviesController {
@@ -41,9 +44,13 @@ export class MoviesController {
   }
 
   @Get()
-  async findAll(@Req() req: Request) {
+  async findAll(
+    @Query('search') search: string,
+    @Query('genre') genre: string,
+    @Req() req: Request,
+  ) {
     try {
-      const movies = await this.moviesService.findAll();
+      const movies = await this.moviesService.findAll(search, genre);
       return HttpResponse.success(
         movies,
         'Movies retrieved successfully',

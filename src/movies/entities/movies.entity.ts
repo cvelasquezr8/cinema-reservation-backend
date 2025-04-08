@@ -4,9 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('movies')
 export class Movie {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -49,4 +50,7 @@ export class Movie {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn({ nullable: true })
+  deletedAt?: Date;
 }

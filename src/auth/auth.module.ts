@@ -1,14 +1,15 @@
-import { Global, Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Global, Module } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { User } from './entities/user.entity';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { UserRoleGuard } from './guards/user-role.guard';
+// Custom imports
+import { AuthService } from '@auth/auth.service';
+import { User } from '@auth/entities/user.entity';
+import { AuthController } from '@auth/auth.controller';
+import { JwtStrategy } from '@auth/strategies/jwt.strategy';
+import { UserRoleGuard } from '@auth/guards/user-role.guard';
 
 @Global()
 @Module({

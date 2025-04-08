@@ -3,9 +3,16 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { AuthModule } from './auth/auth.module';
-import { MoviesModule } from './movies/movies.module';
-import { UsersModule } from './users/users.module';
+
+// Importing the modules
+import { AuthModule } from '@auth/auth.module';
+import { UsersModule } from '@users/users.module';
+import { SeatsModule } from '@seats/seats.module';
+import { RoomsModule } from '@rooms/rooms.module';
+import { MoviesModule } from '@movies/movies.module';
+import { OrdersModule } from '@orders/orders.module';
+import { ShowtimesModule } from '@showtimes/showtimes.module';
+import { ReservationsModule } from '@reservations/reservations.module';
 
 @Module({
   imports: [
@@ -22,13 +29,17 @@ import { UsersModule } from './users/users.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
-
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
     AuthModule,
     MoviesModule,
     UsersModule,
+    ReservationsModule,
+    OrdersModule,
+    ShowtimesModule,
+    SeatsModule,
+    RoomsModule,
   ],
 })
 export class AppModule {}

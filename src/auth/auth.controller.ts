@@ -1,12 +1,12 @@
 import { Controller, Get, Post, Body, Req, HttpStatus } from '@nestjs/common';
 
-import { AuthService } from './auth.service';
-import { CreateUserDto, LoginUserDto } from './dto';
-import { User } from './entities/user.entity';
-
-import { Auth, GetUser } from './decorators/';
-import { HttpResponse, StandardHttpResponse } from 'src/common/http-response';
-import { UserWithToken } from 'src/common/interfaces/user-with-token.interface';
+// Custom imports
+import { AuthService } from '@auth/auth.service';
+import { Auth, GetUser } from '@auth/decorators';
+import { User } from '@auth/entities/user.entity';
+import { CreateUserDto, LoginUserDto } from '@auth/dto';
+import { HttpResponse, StandardHttpResponse } from '@common/http-response';
+import { UserWithToken } from '@common/interfaces/user-with-token.interface';
 
 @Controller('auth')
 export class AuthController {

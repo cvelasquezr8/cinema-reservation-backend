@@ -1,8 +1,10 @@
-import { applyDecorators, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { UserRoleGuard } from '../guards/user-role.guard';
-import { ValidRoles } from '../interfaces';
-import { RoleProtected } from './role-protected.decorator';
+import { applyDecorators, UseGuards } from '@nestjs/common';
+
+// This decorator is used to protect routes with authentication and authorization
+import { UserRoleGuard } from '@auth/guards/user-role.guard';
+import { ValidRoles } from '@auth/interfaces';
+import { RoleProtected } from '@auth/decorators/role-protected.decorator';
 
 export function Auth(...roles: ValidRoles[]) {
   return applyDecorators(

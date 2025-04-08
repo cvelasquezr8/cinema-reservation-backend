@@ -1,3 +1,5 @@
+import * as bcrypt from 'bcrypt';
+import { Repository } from 'typeorm';
 import {
   BadRequestException,
   Injectable,
@@ -6,21 +8,19 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
-import * as bcrypt from 'bcrypt';
-
-import { User } from './entities/user.entity';
-import { LoginUserDto, CreateUserDto } from './dto';
-import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { UserWithToken } from 'src/common/interfaces/user-with-token.interface';
+// Custom imports
+import { User } from '@auth/entities/user.entity';
+import { LoginUserDto, CreateUserDto } from '@auth/dto';
+import { JwtPayload } from '@auth/interfaces/jwt-payload.interface';
+import { UserWithToken } from '@common/interfaces/user-with-token.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly userRepository: Repository<User>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserWithToken> {

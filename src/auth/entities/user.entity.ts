@@ -3,10 +3,15 @@ import {
   BeforeUpdate,
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { Order } from '@orders/entities';
+import { Reservation } from '@reservations/entities/reservation.entity';
 
 @Entity('users')
 export class User {
@@ -49,11 +54,20 @@ export class User {
   @Column('date', { nullable: true })
   birthdate: Date;
 
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  reservations: Reservation[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @DeleteDateColumn({ nullable: true })
+  deletedAt?: Date;
 
   @BeforeInsert()
   checkFieldsBeforeInsert() {

@@ -1,2 +1,2 @@
-export { CreateMovieDto } from './create-movie.dto';
-export { UpdateMovieDto } from './update-movie.dto';
+export { CreateMovieDto } from '@movies/dto/create-movie.dto';
+export { UpdateMovieDto } from '@movies/dto/update-movie.dto';

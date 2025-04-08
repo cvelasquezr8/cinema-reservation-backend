@@ -7,8 +7,10 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { User } from '../entities/user.entity';
-import { META_ROLES } from '../decorators/role-protected.decorator';
+
+// This guard checks if the user has a valid role
+import { User } from '@auth/entities/user.entity';
+import { META_ROLES } from '@auth/decorators/role-protected.decorator';
 
 @Injectable()
 export class UserRoleGuard implements CanActivate {
