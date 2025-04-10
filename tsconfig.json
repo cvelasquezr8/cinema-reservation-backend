@@ -26,7 +26,8 @@
       "@orders/*": ["src/orders/*"],
       "@rooms/*": ["src/rooms/*"],
       "@seats/*": ["src/seats/*"],
-      "@showtimes/*": ["src/showtimes/*"]
+      "@showtimes/*": ["src/showtimes/*"],
+      "@mail/*": ["src/mail/*"]
     }
   }
 }

@@ -22,6 +22,7 @@ import {
 import { JwtPayload } from '@auth/interfaces/jwt-payload.interface';
 import { UserWithToken } from '@common/interfaces/user-with-token.interface';
 import { ConfigService } from '@nestjs/config';
+import { MailService } from '@mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -38,6 +39,7 @@ export class AuthService {
 
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly mailService: MailService,
   ) {
     this.googleClientID = this.configService.get<string>(
       'GOOGLE_API_TOKEN_ID',
@@ -201,7 +203,25 @@ export class AuthService {
       await this.passwordResetRepository.save(resetToken);
 
       // 3. Send email with the reset link
-      //!TODO send email with the reset link
+      const html = `
+        <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: auto;">
+          <h2 style="color: #4A90E2;">🔐 Password Recovery</h2>
+          <p>Hi <strong>${user.fullName}</strong>,</p>
+          <p>You recently requested to reset your password.</p>
+          <p>Your 6-digit recovery code is:</p>
+          <p style="font-size: 24px; font-weight: bold; color: #000; background: #f1f1f1; padding: 10px 20px; display: inline-block; border-radius: 5px;">
+            ${code}
+          </p>
+          <p>This code will expire in <strong>10 minutes</strong>.</p>
+          <p>If you didn't request this, you can safely ignore this email.</p>
+          <br/>
+          <p style="font-size: 12px; color: #888;">— The CineApp Team 🎬</p>
+        </div>
+      `;
+
+      const subject = 'Password Recovery';
+      const to = user.email;
+      await this.mailService.sendMail({ to, subject, html });
 
       this.logger.log(`Password reset email sent to ${user.email}`);
       return { isSent: true };
