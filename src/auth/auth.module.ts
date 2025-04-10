@@ -6,7 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 // Custom imports
 import { AuthService } from '@auth/auth.service';
-import { User } from '@auth/entities/user.entity';
+import { User, PasswordReset } from '@auth/entities';
 import { AuthController } from '@auth/auth.controller';
 import { JwtStrategy } from '@auth/strategies/jwt.strategy';
 import { UserRoleGuard } from '@auth/guards/user-role.guard';
@@ -17,7 +17,7 @@ import { UserRoleGuard } from '@auth/guards/user-role.guard';
   providers: [AuthService, JwtStrategy, UserRoleGuard],
   imports: [
     ConfigModule,
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, PasswordReset]),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

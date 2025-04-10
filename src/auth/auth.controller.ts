@@ -4,10 +4,15 @@ import { Controller, Get, Post, Body, Req, HttpStatus } from '@nestjs/common';
 import { AuthService } from '@auth/auth.service';
 import { Auth, GetUser } from '@auth/decorators';
 import { User } from '@auth/entities/user.entity';
-import { CreateUserDto, LoginUserDto } from '@auth/dto';
+import {
+  CreateUserDto,
+  LoginUserDto,
+  ResetPasswordDto,
+  VerifyResetCodeDto,
+} from '@auth/dto';
 import { HttpResponse, StandardHttpResponse } from '@common/http-response';
 import { UserWithToken } from '@common/interfaces/user-with-token.interface';
-import { GoogleAuthDto } from './dto/google-login.dto';
+import { GoogleAuthDto } from '@auth/dto';
 
 @Controller('auth')
 export class AuthController {
@@ -86,6 +91,69 @@ export class AuthController {
       return HttpResponse.error(
         error.message || 'Login failed',
         error.status || HttpStatus.UNAUTHORIZED,
+        req.url,
+      );
+    }
+  }
+
+  @Post('forgot-password')
+  async forgotPassword(@Body('email') email: string, @Req() req: Request) {
+    try {
+      const result = await this.authService.forgotPassword(email);
+      return HttpResponse.success(
+        result,
+        'Password reset link sent',
+        HttpStatus.OK,
+        req.url,
+      );
+    } catch (error) {
+      return HttpResponse.error(
+        error.message,
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+        req.url,
+      );
+    }
+  }
+
+  @Post('verify-reset-code')
+  async verifyToken(
+    @Body() verifyResetCode: VerifyResetCodeDto,
+    @Req() req: Request,
+  ) {
+    try {
+      const result = await this.authService.verifyToken(verifyResetCode.code);
+      return HttpResponse.success(
+        result,
+        'Token verified',
+        HttpStatus.OK,
+        req.url,
+      );
+    } catch (error) {
+      return HttpResponse.error(
+        error.message,
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+        req.url,
+      );
+    }
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body() resetPasswordDto: ResetPasswordDto,
+    @Req() req: Request,
+  ) {
+    try {
+      const result = await this.authService.resetPassword(resetPasswordDto);
+      return HttpResponse.success(
+        result,
+        'Password reset successful',
+        HttpStatus.OK,
+        req.url,
+      );
+    } catch (error) {
+      return HttpResponse.error(
+        error.message,
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
         req.url,
       );
     }
