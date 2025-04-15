@@ -21,6 +21,13 @@ export class Movie {
   @Column()
   director: string;
 
+  @Column('jsonb', { nullable: true })
+  directorInfo: {
+    name: string;
+    photo: string | null;
+    biography: string | null;
+  };
+
   @Column('int')
   duration: number; // in minutes
 
