@@ -46,6 +46,9 @@ export class CreateMovieDto {
   @IsUrl()
   posterUrl: string;
 
+  @IsUrl()
+  backdropUrl: string;
+
   @IsString()
   description: string;
 

@@ -103,6 +103,9 @@ export class SeedService {
           posterUrl: movie.poster_path
             ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
             : '',
+          backdropUrl: movie.backdrop_path
+            ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
+            : '',
           cast,
           showtimes: ['10:30', '14:15', '17:45'],
         });

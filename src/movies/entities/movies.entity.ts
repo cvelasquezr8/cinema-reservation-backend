@@ -43,6 +43,9 @@ export class Movie {
   @Column()
   posterUrl: string;
 
+  @Column()
+  backdropUrl: string;
+
   @Column({ type: 'text' })
   description: string;
 
