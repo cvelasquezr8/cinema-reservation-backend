@@ -267,6 +267,14 @@ export class AuthService {
     this.logger.log(`User ${userID} password reset successfully`);
     return { isUpdated: true };
   }
+
+  async getProfile(userID: string) {
+    const user = await this.userRepository.findOneBy({ id: userID });
+    if (!user)
+      throw new BadRequestException(`User not found with id ${userID}`);
+
+    return user;
+  }
 }
 
 function generateVerificationCode(): string {

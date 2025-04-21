@@ -13,12 +13,12 @@ export class MoviesService {
     private readonly movieRepository: Repository<Movie>,
   ) {}
 
-  create(createMovieDto: CreateMovieDto) {
+  create(createMovieDto: CreateMovieDto): Promise<Movie> {
     const movie = this.movieRepository.create(createMovieDto);
     return this.movieRepository.save(movie);
   }
 
-  async findAll(search?: string, genre?: string) {
+  findAll(search?: string, genre?: string): Promise<Movie[]> {
     const query = this.movieRepository.createQueryBuilder('movie');
 
     if (search) {
@@ -43,7 +43,7 @@ export class MoviesService {
     return query.getMany();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Movie> {
     const movie = await this.movieRepository.findOne({
       where: { id },
     });
