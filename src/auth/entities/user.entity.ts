@@ -10,7 +10,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Order } from '@orders/entities';
 import { Reservation } from '@reservations/entities/reservation.entity';
 
 @Entity('users')
@@ -62,9 +61,6 @@ export class User {
 
   @OneToMany(() => Reservation, (reservation) => reservation.user)
   reservations: Reservation[];
-
-  @OneToMany(() => Order, (order) => order.user)
-  orders: Order[];
 
   @CreateDateColumn()
   createdAt: Date;

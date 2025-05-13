@@ -4,37 +4,31 @@ import {
   Column,
   ManyToOne,
   CreateDateColumn,
-  JoinColumn,
-  OneToOne,
   UpdateDateColumn,
   DeleteDateColumn,
+  JoinColumn,
 } from 'typeorm';
-
-// Custom imports
 import { User } from '@auth/entities/user.entity';
-import { Seat } from '@seats/entities/seat.entity';
 import { Showtime } from '@showtimes/entities/showtime.entity';
-import { OrderItem } from '@orders/entities/order-item.entity';
 
 @Entity('reservations')
 export class Reservation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @CreateDateColumn()
-  reservationTime: Date;
-
   @ManyToOne(() => User, (user) => user.reservations)
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Showtime, (showtime) => showtime.reservations)
+  @ManyToOne(() => Showtime)
+  @JoinColumn({ name: 'showtime_id' })
   showtime: Showtime;
 
-  @ManyToOne(() => Seat)
-  seat: Seat;
+  @Column('jsonb')
+  seats: string[];
 
-  @OneToOne(() => OrderItem, (orderItem) => orderItem.reservation)
-  orderItem: OrderItem;
+  @Column('decimal')
+  total: number;
 
   @CreateDateColumn()
   createdAt: Date;

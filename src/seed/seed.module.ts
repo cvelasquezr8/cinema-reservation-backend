@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { SeedService } from './seed.service';
-import { Movie } from '../movies/entities/movies.entity';
+import { Movie } from '@movies/entities/movies.entity';
+import { ShowtimesModule } from '@showtimes/showtimes.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { Movie } from '../movies/entities/movies.entity';
       synchronize: true,
     }),
     TypeOrmModule.forFeature([Movie]),
+    ShowtimesModule,
   ],
   providers: [SeedService],
 })

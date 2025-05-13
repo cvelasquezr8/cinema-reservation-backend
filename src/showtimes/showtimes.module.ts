@@ -1,21 +1,11 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module } from '@nestjs/common';
 import { ShowtimesService } from './showtimes.service';
-import { ShowtimesController } from './showtimes.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { Showtime } from './entities/showtime.entity';
-import { RoomsModule } from '@rooms/rooms.module';
-import { MoviesModule } from '@movies/movies.module';
-import { ReservationsModule } from '@reservations/reservations.module';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Showtime]),
-    RoomsModule,
-    MoviesModule,
-    forwardRef(() => ReservationsModule),
-  ],
-  controllers: [ShowtimesController],
+  imports: [TypeOrmModule.forFeature([Showtime])],
   providers: [ShowtimesService],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, ShowtimesService],
 })
 export class ShowtimesModule {}

@@ -1,9 +1,20 @@
-import { IsUUID } from 'class-validator';
+import {
+  IsUUID,
+  IsArray,
+  ArrayNotEmpty,
+  IsNumber,
+  IsPositive,
+} from 'class-validator';
 
 export class CreateReservationDto {
   @IsUUID()
   showtimeId: string;
 
-  @IsUUID()
-  seatId: string;
+  @IsArray()
+  @ArrayNotEmpty()
+  seats: string[];
+
+  @IsNumber()
+  @IsPositive()
+  total: number;
 }

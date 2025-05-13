@@ -23,9 +23,6 @@
       "@users/*": ["src/users/*"],
       "@movies/*": ["src/movies/*"],
       "@reservations/*": ["src/reservations/*"],
-      "@orders/*": ["src/orders/*"],
-      "@rooms/*": ["src/rooms/*"],
-      "@seats/*": ["src/seats/*"],
       "@showtimes/*": ["src/showtimes/*"],
       "@mail/*": ["src/mail/*"]
     }

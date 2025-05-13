@@ -1,45 +1,29 @@
 import {
+  Entity,
+  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-
-// Custom imports
 import { Movie } from '@movies/entities/movies.entity';
-import { Room } from '@rooms/entities/room.entity';
-import { Reservation } from '@reservations/entities/reservation.entity';
 
 @Entity('showtimes')
 export class Showtime {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('timestamp')
-  startTime: Date;
-
-  @Column('timestamp')
-  endTime: Date;
-
-  @ManyToOne(() => Movie, (movie) => movie.showtimes)
+  @ManyToOne(() => Movie, (movie) => movie.showtimes, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'movie_id' })
   movie: Movie;
 
-  @ManyToOne(() => Room, (room) => room.showtimes)
-  room: Room;
-
-  @OneToMany(() => Reservation, (reservation) => reservation.showtime)
-  reservations: Reservation[];
+  @Column()
+  time: string;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @DeleteDateColumn({ nullable: true })
-  deletedAt?: Date;
 }

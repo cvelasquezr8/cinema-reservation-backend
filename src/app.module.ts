@@ -7,14 +7,10 @@ import { MailerModule } from '@nestjs-modules/mailer';
 
 // Importing the modules
 import { AuthModule } from '@auth/auth.module';
-import { UsersModule } from '@users/users.module';
-import { SeatsModule } from '@seats/seats.module';
-import { RoomsModule } from '@rooms/rooms.module';
 import { MoviesModule } from '@movies/movies.module';
-import { OrdersModule } from '@orders/orders.module';
-import { ShowtimesModule } from '@showtimes/showtimes.module';
 import { ReservationsModule } from '@reservations/reservations.module';
 import { MailModule } from '@mail/mail.module';
+import { ShowtimesModule } from './showtimes/showtimes.module';
 
 @Module({
   imports: [
@@ -49,13 +45,9 @@ import { MailModule } from '@mail/mail.module';
     }),
     AuthModule,
     MoviesModule,
-    UsersModule,
     ReservationsModule,
-    OrdersModule,
-    ShowtimesModule,
-    SeatsModule,
-    RoomsModule,
     MailModule,
+    ShowtimesModule,
   ],
 })
 export class AppModule {}

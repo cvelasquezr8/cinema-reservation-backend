@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Showtime } from '@showtimes/entities/showtime.entity';
 
 @Entity('movies')
 export class Movie {
@@ -52,8 +54,8 @@ export class Movie {
   @Column('jsonb', { nullable: true })
   cast: { name: string; character: string; image: string }[];
 
-  @Column('jsonb', { nullable: true })
-  showtimes: string[]; // Ej: ["10:30", "14:15", "17:45"]
+  @OneToMany(() => Showtime, (showtime) => showtime.movie)
+  showtimes: Showtime[];
 
   @CreateDateColumn()
   createdAt: Date;

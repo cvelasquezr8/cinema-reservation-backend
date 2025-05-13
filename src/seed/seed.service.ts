@@ -1,15 +1,18 @@
+import axios from 'axios';
+import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import axios from 'axios';
-import { Movie } from '../movies/entities/movies.entity';
 import { ConfigService } from '@nestjs/config';
+
+import { Movie } from '../movies/entities/movies.entity';
+import { ShowtimesService } from '../showtimes/showtimes.service';
 
 interface DirectorInfo {
   name: string;
   photo: string | null;
   biography: string | null;
 }
+
 @Injectable()
 export class SeedService {
   private readonly apiKey: string;
@@ -18,6 +21,7 @@ export class SeedService {
     @InjectRepository(Movie)
     private movieRepository: Repository<Movie>,
     private configService: ConfigService,
+    private showtimesService: ShowtimesService,
   ) {
     this.apiKey = this.configService.get<string>('MOVIE_API_KEY')!;
   }
@@ -76,9 +80,7 @@ export class SeedService {
               biography: personData.biography || null,
             };
           } catch (error) {
-            console.warn(
-              `No se pudo obtener info del director: ${directorName}`,
-            );
+            console.warn(`Director information not found: ${directorName}`);
           }
         }
 
@@ -90,7 +92,8 @@ export class SeedService {
             : null,
         }));
 
-        await this.movieRepository.save({
+        // 1. Insert movie
+        const savedMovie = await this.movieRepository.save({
           title: movie.title,
           synopsis: movie.overview,
           description: movie.overview,
@@ -107,10 +110,17 @@ export class SeedService {
             ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`
             : '',
           cast,
-          showtimes: ['10:30', '14:15', '17:45'],
         });
 
-        console.log(`✔️ Inserted movie: ${movie.title}`);
+        // 2. Insert showtimes
+        await this.showtimesService.createShowtimesBulk(savedMovie, [
+          '10:30 AM',
+          '02:15 PM',
+          '05:45 PM',
+          '09:00 PM',
+        ]);
+
+        console.log(`✔️ Inserted movie and showtimes: ${movie.title}`);
       }
     }
   }
