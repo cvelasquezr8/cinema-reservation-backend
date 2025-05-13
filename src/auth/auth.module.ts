@@ -26,7 +26,7 @@ import { UserRoleGuard } from '@auth/guards/user-role.guard';
         return {
           secret: configService.get('JWT_SECRET'),
           signOptions: {
-            expiresIn: '2h',
+            expiresIn: configService.get('JWT_SECRET_EXPIRES_IN'),
           },
         };
       },
