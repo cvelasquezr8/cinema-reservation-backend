@@ -13,8 +13,4 @@ export class CreateReservationDto {
   @IsArray()
   @ArrayNotEmpty()
   seats: string[];
-
-  @IsNumber()
-  @IsPositive()
-  total: number;
 }

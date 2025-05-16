@@ -24,7 +24,6 @@ export class ReservationsService {
       user,
       showtime,
       seats: dto.seats,
-      total: dto.total,
     });
 
     return this.reservationRepository.save(reservation);
@@ -38,5 +37,63 @@ export class ReservationsService {
     });
 
     return reservations.flatMap((res) => res.seats);
+  }
+
+  async getMyReservations(user: User): Promise<any[]> {
+    const reservations = await this.reservationRepository.find({
+      where: {
+        user: { id: user.id },
+      },
+      relations: ['showtime', 'showtime.movie', 'payment'],
+      order: {
+        payment: {
+          date: 'DESC',
+        },
+      },
+    });
+
+    if (!reservations.length) return [];
+
+    const response = reservations.map((reservation) => ({
+      id: reservation.id,
+      movieTitle: reservation.showtime.movie.title,
+      poster: reservation.showtime.movie.posterUrl,
+      date: reservation.payment.date,
+      time: reservation.showtime.time,
+      seats: reservation.seats,
+      total: reservation.payment.total / 100,
+      cinema: 'CineReserve IMAX',
+      transactionId: reservation.payment.id.split('-')[0],
+      status: 'completed',
+    }));
+
+    return response;
+  }
+
+  async getReservationById(reservationID: string) {
+    const reservation = await this.reservationRepository.findOne({
+      where: { id: reservationID },
+      relations: ['showtime', 'showtime.movie', 'payment'],
+    });
+
+    if (!reservation) {
+      throw new NotFoundException('Reservation not found');
+    }
+
+    return {
+      id: reservation.id,
+      movieTitle: reservation.showtime.movie.title,
+      poster: reservation.showtime.movie.posterUrl,
+      date: reservation.payment.date,
+      time: reservation.showtime.time,
+      seats: reservation.seats,
+      total: reservation.payment.total / 100,
+      cinema: 'CineReserve IMAX',
+      transactionId: reservation.payment.id.split('-')[0],
+      status: 'completed',
+      ticketPrice: 15,
+      format: 'IMAX',
+      paymentMethod: reservation.payment.type,
+    };
   }
 }

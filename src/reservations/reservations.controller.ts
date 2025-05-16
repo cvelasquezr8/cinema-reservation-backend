@@ -19,12 +19,24 @@ export class ReservationsController {
 
   @Post()
   @Auth()
-  async create(@Body() dto: CreateReservationDto, @GetUser() user: User) {
+  create(@Body() dto: CreateReservationDto, @GetUser() user: User) {
     return this.reservationsService.createReservation(dto, user);
   }
 
   @Get('/showtimes/:id/seats')
-  async getReservedSeats(@Param('id', ParseUUIDPipe) showtimeId: string) {
+  getReservedSeats(@Param('id', ParseUUIDPipe) showtimeId: string) {
     return this.reservationsService.findByShowtime(showtimeId);
+  }
+
+  @Get('my')
+  @Auth()
+  getMyReservations(@GetUser() user: User) {
+    return this.reservationsService.getMyReservations(user);
+  }
+
+  @Get(':id')
+  @Auth()
+  getReservationById(@Param('id', ParseUUIDPipe) reservationId: string) {
+    return this.reservationsService.getReservationById(reservationId);
   }
 }

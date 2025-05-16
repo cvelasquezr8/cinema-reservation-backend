@@ -11,6 +11,7 @@ import { MoviesModule } from '@movies/movies.module';
 import { ReservationsModule } from '@reservations/reservations.module';
 import { MailModule } from '@mail/mail.module';
 import { ShowtimesModule } from './showtimes/showtimes.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { ShowtimesModule } from './showtimes/showtimes.module';
     ReservationsModule,
     MailModule,
     ShowtimesModule,
+    PaymentsModule,
   ],
 })
 export class AppModule {}

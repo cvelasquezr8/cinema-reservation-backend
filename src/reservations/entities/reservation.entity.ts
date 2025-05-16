@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { User } from '@auth/entities/user.entity';
 import { Showtime } from '@showtimes/entities/showtime.entity';
+import { Payment } from 'src/payments/entities/payment.entity';
 
 @Entity('reservations')
 export class Reservation {
@@ -24,11 +25,12 @@ export class Reservation {
   @JoinColumn({ name: 'showtime_id' })
   showtime: Showtime;
 
+  @ManyToOne(() => Payment)
+  @JoinColumn({ name: 'payment_id' })
+  payment: Payment;
+
   @Column('jsonb')
   seats: string[];
-
-  @Column('decimal')
-  total: number;
 
   @CreateDateColumn()
   createdAt: Date;
